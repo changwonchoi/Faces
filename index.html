@@ -4,12 +4,16 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<div>Teachable Machine Image Model</div>
-	<button class = "file-upload-btn" type="button" onclick="init()">Start</button>
 	<script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-	<div class="file-upload-image" id="webcam-container">
+	<div class="container">
+		<div class="webcam" id="webcam-container"></div>
 	</div>
-	<div class="remove-image" id="label-container"></div>
+	<div class="container" id= "result-box">
+		<div class="result" id="label-container"></div>
+	</div>
+	<div class="container">
+		<button class = "start-btn" type="button" onclick="init()">Start</button>
+	</div>
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
 	<script type="text/javascript">
@@ -18,7 +22,6 @@
 
     // the link to your model provided by Teachable Machine export panel
     const URL = "https://teachablemachine.withgoogle.com/models/TzKdlxpAl/";
-
     let model, webcam, labelContainer, maxPredictions;
 
     // Load the image model and setup the webcam
@@ -35,7 +38,7 @@
 
         // Convenience function to setup a webcam
         const flip = true; // whether to flip the webcam
-        webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+        webcam = new tmImage.Webcam(500, 500, flip); // width, height, flip
         await webcam.setup(); // request access to the webcam
         await webcam.play();
         window.requestAnimationFrame(loop);
