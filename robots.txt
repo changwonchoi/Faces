@@ -1,0 +1,2 @@
+User-agent: *Allow:/
+Sitemap: https://changwon.netlify.app/sitemap.xml
