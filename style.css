@@ -18,15 +18,13 @@ body {
   color: #35465d;
 }
 
-.file-upload {
+.game-container {
   background-color: #ffffff;
-  width: 600px;
-  margin: 0 auto;
   padding: 20px;
   text-align: center;
 }
 
-.start-btn {
+.play-btn {
   width: 45%;
   margin: 0;
   color: #fff;
@@ -41,19 +39,14 @@ body {
   font-weight: 700;
 }
 
-.start-btn:hover {
+.play-btn:hover {
   background: #1AA059;
   color: #ffffff;
   transition: all .2s ease;
   cursor: pointer;
 }
 
-.file-upload-btn:active {
-  border: 0;
-  transition: all .2s ease;
-}
-
-.file-upload-content {
+.webcam-container {
   text-align: center;
   margin-top: 20px;
   position: relative;
@@ -61,52 +54,17 @@ body {
   width: 100%;
 }
 
-.file-upload-input {
+.webcam-content {
   width: 100%;
-  height: 20em;
   padding:15px;
 }
 
-.image-upload-wrap {
-  margin-top: 20px;
-  border: 4px solid #1FB264;
-  position: relative;
-}
-
-.image-dropping,
-.image-upload-wrap:hover {
-  background-color: #1FB264;
-  border: 4px dashed #ffffff;
-}
-
-.image-title-wrap {
+.action-container {
   padding: 15px;
   color: #222;
 }
 
-.drag-text {
-  text-align: center;
-}
-
-.drag-text h3 {
-  font-weight: 100;
-  text-transform: uppercase;
-  color: #15824B;
-  padding: 60px 0;
-}
-
-.file-upload-image {
-  position: absolute;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  outline: none;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.remove-image {
+.action-content {
   color: #fff;
   background: #cd4535;
   border: none;
