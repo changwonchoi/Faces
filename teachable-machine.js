@@ -1,8 +1,18 @@
 // the link to your model provided by Teachable Machine export panel
 const URL = "https://teachablemachine.withgoogle.com/models/ouD6W4gvb/";
 let machine_model, webcam, ctx, labelContainer, maxPredictions;
+let is_init = 0;
+var move;
 
 async function init() {
+
+    if (is_init) {
+        return
+    } 
+    else {
+        is_init = 1;
+    }
+
 	const modelURL = URL + "model.json";
 	const metadataURL = URL + "metadata.json";
 
@@ -42,12 +52,9 @@ async function predict() {
     const { pose, posenetOutput } = await machine_model.estimatePose(webcam.canvas);
     // Prediction 2: run input through teachable machine classification model
     const prediction = await machine_model.predict(posenetOutput);
-
-    for (let i = 0; i < maxPredictions; i++) {
-    	const classPrediction =
-    	prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-    	labelContainer.childNodes[i].innerHTML = classPrediction;
-    }
+    prediction.sort((a,b) => parseFloat(b.probability) - parseFloat(a.probability));
+    labelContainer.childNodes[0].innerHTML = prediction[0].className;
+    move = prediction[0].className;
 
     // finally draw the poses
     drawPose(pose);
