@@ -10,9 +10,6 @@ async function init() {
     if (is_init) {
         return
     } 
-    else {
-        is_init = true;
-    }
 
 	const modelURL = URL + "model.json";
 	const metadataURL = URL + "metadata.json";
@@ -39,6 +36,7 @@ async function init() {
     for (let i = 0; i < maxPredictions; i++) { // and class labels
     	labelContainer.appendChild(document.createElement("div"));
     }
+    is_init = true;
 }
 
 async function machine_loop(timestamp) {
@@ -66,11 +64,11 @@ async function predict() {
         is_not_pause = true;
     }
 
-    if (move == "Pause" && is_pause && is_not_pause){
+    if (move == "Pause" && is_pause && is_not_pause && is_start){
         unpause();
     }
     
-    if (move == "Pause" && !is_pause && is_not_pause){
+    if (move == "Pause" && !is_pause && is_not_pause && is_start){
         pause();
     }
 

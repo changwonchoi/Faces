@@ -39,6 +39,7 @@ function setup(){
 
 function start() {
     is_start = true;
+    is_pause = false;
     gameScreen.removeEventListener('click', start_btn_clicked);
     gameScreen.removeEventListener('mousemove', start_btn_hovering);
     ship = new Ship();
@@ -128,14 +129,9 @@ function draw(){
     background(0);
     if (is_start && !is_pause) {
         noStroke();
-        if(enemies.length == 0){
-            fill(0,255,0);
-            textSize(100);
-            text("You win!", width/2-200,height/2);
-        }else if(ship.hp <0){
-            fill(255,0,0);
-            textSize(100);
-            text("You lose!", width/2-200,height/2);
+        if (enemies.length == 0 || ship.hp <0) {
+            is_start = false;
+            is_pause = false;
         }
 
         var maxX = enemies[0].pos.x;
@@ -233,6 +229,39 @@ function draw(){
         fill(192,192,192);
         textSize(45);
         text("QUIT",width/2-54,height/2+84);
+    }
+    else if (!is_start && !is_pause && is_init) {
+        if(stars.length <= 100){
+            stars.push(new Star());
+        }
+
+        for( let i = 0; i < stars.length; i++){
+            stars[i].update();
+
+            if(stars[i].isOffScreen()){
+                stars[i] = new Star();
+            }
+        }
+        strokeWeight(3);
+        stroke(255,255,255);
+        if(enemies.length == 0){
+            fill(0,255,0);
+            textSize(100);
+            text("You win!", width/2-195,height/2-15);
+        }else if(ship.hp <0){
+            fill(255,0,0);
+            textSize(100);
+            text("You lose!", width/2-200,height/2-15);
+        }
+
+        strokeWeight(4);
+        stroke(192 ,192,192);
+        noFill();
+        rect(width/2-100,height/2+40,200,55,15);
+        fill(192,192,192);
+        textSize(45);
+        text("REPLAY",width/2-73,height/2+84);
+        noStroke();
     }
     else {
         if(stars.length <= 100){
