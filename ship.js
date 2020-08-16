@@ -3,7 +3,7 @@ function Ship(){
     this.w = 20;
     this.h = 50;
     this.hp = 3;
-    this.speed = 4;
+    this.speed = 6;
     this.vel = createVector(0,0);
     
     this.update = function(){

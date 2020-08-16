@@ -1,8 +1,9 @@
 // the link to your model provided by Teachable Machine export panel
 const URL = "https://teachablemachine.withgoogle.com/models/ouD6W4gvb/";
 let machine_model, webcam, ctx, labelContainer, maxPredictions;
-let is_init = 0;
+let is_init = false;
 var move;
+var is_not_pause = true;
 
 async function init() {
 
@@ -10,7 +11,7 @@ async function init() {
         return
     } 
     else {
-        is_init = 1;
+        is_init = true;
     }
 
 	const modelURL = URL + "model.json";
@@ -54,7 +55,24 @@ async function predict() {
     const prediction = await machine_model.predict(posenetOutput);
     prediction.sort((a,b) => parseFloat(b.probability) - parseFloat(a.probability));
     labelContainer.childNodes[0].innerHTML = prediction[0].className;
-    move = prediction[0].className;
+    if (prediction[0].probability > 0.80) {
+        move = prediction[0].className;
+    }
+    else {
+        move = "Unknown"
+    }
+
+    if (move != "Pause" && move != "Unknown"){
+        is_not_pause = true;
+    }
+
+    if (move == "Pause" && is_pause && is_not_pause){
+        unpause();
+    }
+    
+    if (move == "Pause" && !is_pause && is_not_pause){
+        pause();
+    }
 
     // finally draw the poses
     drawPose(pose);
