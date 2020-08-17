@@ -5,6 +5,7 @@ function Ship(){
     this.hp = 3;
     this.speed = 6;
     this.vel = createVector(0,0);
+    this.img = loadImage('images/ship.png');
     
     this.update = function(){
         this.pos.add(this.vel);
@@ -14,7 +15,7 @@ function Ship(){
     }
     
     this.display = function(){
-        fill(255);
+        image(this.img,pos.x,pos.y);
         if(this.hp <= 0) fill(255,0,0);
         rect(this.pos.x-this.w/2,this.pos.y-5,this.w,this.h);
     }
