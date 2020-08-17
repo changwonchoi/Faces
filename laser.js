@@ -19,7 +19,10 @@ function Laser(x,y){
     }
     
     this.touching = function(enemy){
-        var d = this.pos.dist(enemy.pos);
-        return (d < 24);
+        var check_left_hor = (this.pos.x-5) >= enemy.pos.x && (this.pos.x-5) <= enemy.pos.x+enemy.w;
+        var check_right_hor = (this.pos.x+5) >= enemy.pos.x && (this.pos.x+5) <= enemy.pos.x+enemy.w;
+        var check_top_ver = this.pos.y >= enemy.pos.y && this.pos.y <= enemy.pos.y+enemy.h;
+        var check_bottom_ver = (this.pos.y+20) >= enemy.pos.y && (this.pos.y+20) <= enemy.pos.y+enemy.h;
+        return ((check_left_hor || check_right_hor) && (check_top_ver || check_bottom_ver));
     }
 }

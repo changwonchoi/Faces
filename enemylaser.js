@@ -19,7 +19,10 @@ function EnemyLaser(x,y){
 	}
 
 	this.touching = function(ship){
-		var d = ship.pos.dist(this.pos);
-            return (d < 50);
+        var check_left_hor = (this.pos.x) >= ship.pos.x && (this.pos.x) <= ship.pos.x+ship.w;
+        var check_right_hor = (this.pos.x+10) >= ship.pos.x && (this.pos.x+10) <= ship.pos.x+ship.w;
+        var check_top_ver = this.pos.y >= ship.pos.y && this.pos.y <= ship.pos.y+ship.h;
+        var check_bottom_ver = (this.pos.y+20) >= ship.pos.y && (this.pos.y+20) <= ship.pos.y+ship.h;
+        return ((check_left_hor || check_right_hor) && (check_top_ver || check_bottom_ver));
 	}
 }
