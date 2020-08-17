@@ -4,113 +4,43 @@ var enemies = [];
 var stars = [];
 var is_start = false;
 var is_pause = false;
-var gameScreen, button, start_btn_clicked, start_btn_hovering, quit_btn_clicked, quit_btn_hovering;
+var is_over = false;
+var gameScreen, button, start_btn_clicked, quit_btn_clicked, replay_btn_clicked, btn_hovering;
 
-function setup(){
-    gameScreen = createCanvas(800,600);
-    gameScreen.parent("game-screen");
-    gameScreen.id("game");
-    gameScreen = document.getElementById("game");
-    button = {
-        x:width/2-100,
-        y:height/2+40,
-        width:200,
-        height:55
-    };
-    gameScreen.addEventListener('click', start_btn_clicked = function(evt) {
-        var mousePos = getMousePos(gameScreen, evt);
+start_btn_clicked = function(evt) {
+    var mousePos = getMousePos(gameScreen, evt);
 
-        if (isInside(mousePos,button)) {
-            init().then(function(){start();});
-        }
-    }, false);
-
-    gameScreen.addEventListener('mousemove', start_btn_hovering = function(evt) {
-        mousePos = getMousePos(gameScreen, evt);
-
-        if (isInside(mousePos,button)) {
-            gameScreen.style.cursor="pointer";
-        }
-        else {
-            gameScreen.style.cursor="default"
-        }
-    }, false);
-}
-
-function start() {
-    is_start = true;
-    is_pause = false;
-    gameScreen.removeEventListener('click', start_btn_clicked);
-    gameScreen.removeEventListener('mousemove', start_btn_hovering);
-    ship = new Ship();
-    for(var i = 0; i < 10; i++){
-        enemies.push(new Enemy(i*50+50,50,i % 2));
-    }
-    for(var i = 0; i < 10; i++){
-        enemies.push(new Enemy(i*50+50,120,i % 2));
-    }
-    for(var i = 0; i < 10; i++){
-        enemies.push(new Enemy(i*50+50,190,i % 2));
+    if (isInside(mousePos,button)) {
+        init().then(function(){play();});
     }
 }
 
-function pause() {
-    is_not_pause = false;
-    is_pause = true;
-    gameScreen.addEventListener('click', quit_btn_clicked = function(evt) {
-        var mousePos = getMousePos(gameScreen, evt);
+quit_btn_clicked = function(evt) {
+    var mousePos = getMousePos(gameScreen, evt);
 
-        if (isInside(mousePos,button)) {
-            quit_game();
-        }
-    }, false);
-
-    gameScreen.addEventListener('mousemove', quit_btn_hovering = function(evt) {
-        mousePos = getMousePos(gameScreen, evt);
-
-        if (isInside(mousePos,button)) {
-            gameScreen.style.cursor="pointer";
-        }
-        else {
-            gameScreen.style.cursor="default"
-        }
-    }, false);
+    if (isInside(mousePos,button)) {
+        quit_game();
+    }
 }
 
-function unpause() {
-    is_not_pause = false;
-    is_pause = false;
+replay_btn_clicked = function(evt) {
+    var mousePos = getMousePos(gameScreen, evt);
+
+    if (isInside(mousePos,button)) {
+        replay();
+    }
 }
 
-function quit_game() {
-    is_start = false;
-    is_pause = false;
-    ship = null;
-    lasers = [];
-    enemies = [];
-    gameScreen.removeEventListener('click', quit_btn_clicked);
-    gameScreen.removeEventListener('mousemove', quit_btn_hovering);
+btn_hovering = function(evt) {
+    mousePos = getMousePos(gameScreen, evt);
 
-    gameScreen.addEventListener('click', start_btn_clicked = function(evt) {
-        var mousePos = getMousePos(gameScreen, evt);
-
-        if (isInside(mousePos,button)) {
-            start();
-        }
-    }, false);
-
-    gameScreen.addEventListener('mousemove', start_btn_hovering = function(evt) {
-        mousePos = getMousePos(gameScreen, evt);
-
-        if (isInside(mousePos,button)) {
-            gameScreen.style.cursor="pointer";
-        }
-        else {
-            gameScreen.style.cursor="default"
-        }
-    }, false);
+    if (isInside(mousePos,button)) {
+        gameScreen.style.cursor="pointer";
+    }
+    else {
+        gameScreen.style.cursor="default"
+    }
 }
-
 
 //Function to get the mouse position
 function getMousePos(canvas, event) {
@@ -125,6 +55,87 @@ function isInside(pos, rect){
     return pos.x > rect.x && pos.x < rect.x+rect.width && pos.y < rect.y+rect.height && pos.y > rect.y
 }
 
+function play() {
+    is_start = true;
+    is_pause = false;
+    gameScreen.removeEventListener('click', start_btn_clicked);
+    gameScreen.removeEventListener('mousemove', btn_hovering);
+    ship = new Ship();
+    for(var i = 0; i < 10; i++){
+        enemies.push(new Enemy(i*50+50,50,i % 2));
+    }
+    for(var i = 0; i < 10; i++){
+        enemies.push(new Enemy(i*50+50,120,i % 2));
+    }
+    for(var i = 0; i < 10; i++){
+        enemies.push(new Enemy(i*50+50,190,i % 2));
+    }
+}
+
+function replay() {
+    is_start = true;
+    is_pause = false;
+    lasers = [];
+    enemies = [];
+    gameScreen.removeEventListener('click', replay_btn_clicked);
+    gameScreen.removeEventListener('mousemove', btn_hovering);
+    ship = new Ship();
+    for(var i = 0; i < 10; i++){
+        enemies.push(new Enemy(i*50+50,50,i % 2));
+    }
+    for(var i = 0; i < 10; i++){
+        enemies.push(new Enemy(i*50+50,120,i % 2));
+    }
+    for(var i = 0; i < 10; i++){
+        enemies.push(new Enemy(i*50+50,190,i % 2));
+    }
+}
+
+function quit_game() {
+    is_start = false;
+    is_pause = false;
+    is_over = false;
+    ship = null;
+    lasers = [];
+    enemies = [];
+    gameScreen.removeEventListener('click', quit_btn_clicked);
+    gameScreen.removeEventListener('mousemove', btn_hovering);
+
+    gameScreen.addEventListener('click', start_btn_clicked, false);
+    gameScreen.addEventListener('mousemove', btn_hovering, false);
+}
+
+function pause() {
+    is_not_pause = false;
+    is_pause = true;
+    gameScreen.addEventListener('click', quit_btn_clicked, false);
+    gameScreen.addEventListener('mousemove', btn_hovering, false);
+}
+
+function unpause() {
+    is_not_pause = false;
+    is_pause = false;
+    gameScreen.removeEventListener('click', quit_btn_clicked);
+    gameScreen.removeEventListener('mousemove', btn_hovering);
+}
+
+function setup(){
+    gameScreen = createCanvas(800,600);
+    gameScreen.parent("game-screen");
+    gameScreen.id("game");
+    gameScreen = document.getElementById("game");
+    button = {
+        x:width/2-100,
+        y:height/2+40,
+        width:200,
+        height:55
+    };
+    gameScreen.addEventListener('click', start_btn_clicked, false);
+    gameScreen.addEventListener('mousemove', btn_hovering, false);
+}
+
+
+
 function draw(){
     background(0);
     if (is_start && !is_pause) {
@@ -132,6 +143,8 @@ function draw(){
         if (enemies.length == 0 || ship.hp <0) {
             is_start = false;
             is_pause = false;
+            is_over = true;
+            return;
         }
 
         var maxX = enemies[0].pos.x;
@@ -230,7 +243,7 @@ function draw(){
         textSize(45);
         text("QUIT",width/2-54,height/2+84);
     }
-    else if (!is_start && !is_pause && is_init) {
+    else if (is_over) {
         if(stars.length <= 100){
             stars.push(new Star());
         }
@@ -260,8 +273,11 @@ function draw(){
         rect(width/2-100,height/2+40,200,55,15);
         fill(192,192,192);
         textSize(45);
-        text("REPLAY",width/2-73,height/2+84);
+        text("REPLAY",width/2-75,height/2+84);
         noStroke();
+
+        gameScreen.addEventListener('click', replay_btn_clicked, false);
+        gameScreen.addEventListener('mousemove', btn_hovering, false);
     }
     else {
         if(stars.length <= 100){

@@ -20,7 +20,6 @@ body {
 
 .game-container {
   background-color: #ffffff;
-  padding: 20px;
   text-align: center;
   position: relative;
 }
@@ -35,21 +34,28 @@ body {
 .webcam-content {
   width: 100%;
   padding:15px;
+  padding-bottom: 0px;
+}
+
+#webcam {
+  height: 200px;
+  width: 200px;
 }
 
 .action-container {
-  padding: 15px;
   color: #222;
   width: fit-content;
+  margin-bottom: 7px;
 }
 
 .action-content {
   color: #fff;
-  background: #cd4535;
+  background: #c1c1c1;
   border: none;
-  padding: 10px;
+  padding: 5px;
   border-radius: 4px;
   font-weight: 700;
-  min-width:7rem;
+  min-width:5rem;
+  min-height:2.2rem
 }
 
