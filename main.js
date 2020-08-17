@@ -1,4 +1,5 @@
 var ship;
+var missiles = [];
 var lasers = [];
 var enemies = [];
 var stars = [];
@@ -75,7 +76,7 @@ function play() {
 function replay() {
     is_start = true;
     is_pause = false;
-    lasers = [];
+    missiles = [];
     enemies = [];
     gameScreen.removeEventListener('click', replay_btn_clicked);
     gameScreen.removeEventListener('mousemove', btn_hovering);
@@ -96,7 +97,7 @@ function quit_game() {
     is_pause = false;
     is_over = false;
     ship = null;
-    lasers = [];
+    missiles = [];
     enemies = [];
     gameScreen.removeEventListener('click', quit_btn_clicked);
     gameScreen.removeEventListener('mousemove', btn_hovering);
@@ -140,10 +141,16 @@ function draw(){
     background(0);
     if (is_start && !is_pause) {
         noStroke();
-        if (enemies.length == 0 || ship.hp <0) {
+        if (enemies.length == 0 || ship.hp <= 0) {
+            gameScreen.addEventListener('click', replay_btn_clicked, false);
+            gameScreen.addEventListener('mousemove', btn_hovering, false);
             is_start = false;
             is_pause = false;
             is_over = true;
+            ship.vel.x = 0;
+            if(ship.hp <= 0) {
+                ship.img = loadImage('images/ship-broke.png');
+            }
             return;
         }
 
@@ -164,7 +171,7 @@ function draw(){
         }
 
         for(let i = 0; i < enemies.length; i++){
-            if(enemies[rightI].pos.x > width-10){
+            if(enemies[rightI].pos.x > width-15){
                  enemies[i].move();
             }else if(enemies[leftI].pos.x < 10){
                  enemies[i].move();
@@ -184,23 +191,35 @@ function draw(){
             }
         }
 
+        for(let i = missiles.length-1; i>= 0; i--){
+            missiles[i].update();
+            for(let j = enemies.length -1; j>=0; j--){
+                if(missiles[i] && missiles[i].touching(enemies[j])){
+                    enemies.splice(j,1);
+                    missiles.splice(i,1);
+                }
+            }
+            if(missiles[i] && missiles[i].isOffScreen()){
+                missiles.splice(i,1);
+            }
+        }
+
         for(let i = lasers.length-1; i>= 0; i--){
             lasers[i].update();
-            for(let j = enemies.length -1; j>=0; j--){
-                if(lasers[i] && lasers[i].touching(enemies[j])){
-                    enemies.splice(j,1);
-                    lasers.splice(i,1);
-                }
+            if(lasers[i] && lasers[i].touching(ship)){
+                ship.hp--;
+                lasers.splice(i,1);
             }
             if(lasers[i] && lasers[i].isOffScreen()){
                 lasers.splice(i,1);
             }
         }
+
         ship.update();
 
         if (ship.hp > 0) {
             if (frameCount % 20 == 0) {
-                lasers.push(new Laser(ship.pos.x,ship.pos.y));
+                missiles.push(new Laser(ship.pos.x,ship.pos.y));
             }
             switch (move) {
                 case "Left":
@@ -261,7 +280,7 @@ function draw(){
             fill(0,255,0);
             textSize(100);
             text("You win!", width/2-195,height/2-15);
-        }else if(ship.hp <0){
+        }else if(ship.hp <= 0){
             fill(255,0,0);
             textSize(100);
             text("You lose!", width/2-200,height/2-15);
@@ -276,8 +295,7 @@ function draw(){
         text("REPLAY",width/2-75,height/2+84);
         noStroke();
 
-        gameScreen.addEventListener('click', replay_btn_clicked, false);
-        gameScreen.addEventListener('mousemove', btn_hovering, false);
+        ship.update()
     }
     else {
         if(stars.length <= 100){

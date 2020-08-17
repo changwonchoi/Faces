@@ -1,6 +1,9 @@
 function Laser(x,y){
     this.pos = createVector(x,y);
     this.vel = createVector(0,-10);
+    this.w = 10;
+    this.h = 20;
+    this.img = loadImage('images/missile.png');
     
     this.update = function(){
         this.pos.add(this.vel);
@@ -8,8 +11,7 @@ function Laser(x,y){
     }
     
     this.display = function(){
-        fill(255,0,0);
-        rect(this.pos.x-5,this.pos.y,10,20);
+        image(this.img,this.pos.x-5,this.pos.y,this.w,this.h);
     }
     
     this.isOffScreen = function(){
@@ -18,6 +20,6 @@ function Laser(x,y){
     
     this.touching = function(enemy){
         var d = this.pos.dist(enemy.pos);
-        return (d < 20);
+        return (d < 24);
     }
 }
