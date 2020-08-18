@@ -5,6 +5,7 @@ function Enemy(x,y,id){
     this.h = 24;
     this.id = id;
     this.randomShoot = int(random(100,200));
+
     if(this.id == 0){
         this.img = loadImage('images/UFO-R.png');
     }else if(this.id == 1){

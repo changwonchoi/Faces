@@ -4,7 +4,7 @@ function Laser(x,y){
     this.w = 10;
     this.h = 20;
     this.img = loadImage('images/missile.png');
-    
+
     this.update = function(){
         this.pos.add(this.vel);
         this.display();

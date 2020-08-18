@@ -18,6 +18,10 @@ body {
   color: #35465d;
 }
 
+.navbar {
+  min-width:800px;
+}
+
 .game-container {
   background-color: #ffffff;
   text-align: center;
@@ -27,25 +31,20 @@ body {
 .webcam-container {
   text-align: center;
   position: relative;
-  border: 1px solid;
   width: fit-content;
+  min-width:800px
 }
 
 .webcam-content {
-  width: 100%;
+  width:230px;
   padding:15px;
-  padding-bottom: 0px;
+  padding-bottom:0px;
+  border: 1px solid;
 }
 
 #webcam {
   height: 200px;
   width: 200px;
-}
-
-.action-container {
-  color: #222;
-  width: fit-content;
-  margin-bottom: 7px;
 }
 
 .action-content {

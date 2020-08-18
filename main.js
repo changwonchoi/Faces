@@ -3,6 +3,7 @@ var missiles = [];
 var lasers = [];
 var enemies = [];
 var stars = [];
+var lives = [];
 var is_start = false;
 var is_pause = false;
 var is_over = false;
@@ -62,14 +63,17 @@ function play() {
     gameScreen.removeEventListener('click', start_btn_clicked);
     gameScreen.removeEventListener('mousemove', btn_hovering);
     ship = new Ship();
-    for(var i = 0; i < 10; i++){
+    for(let i = 0; i < 10; i++){
         enemies.push(new Enemy(i*50+50,50,i % 2));
     }
-    for(var i = 0; i < 10; i++){
+    for(let i = 0; i < 10; i++){
         enemies.push(new Enemy(i*50+50,120,i % 2));
     }
-    for(var i = 0; i < 10; i++){
+    for(let i = 0; i < 10; i++){
         enemies.push(new Enemy(i*50+50,190,i % 2));
+    }
+    for (let i = 0; i < ship.hp; i++) {
+        lives.push(new Life(i*35+20, 15));
     }
 }
 
@@ -78,17 +82,22 @@ function replay() {
     is_pause = false;
     missiles = [];
     enemies = [];
+    lasers = [];
+    lives = [];
     gameScreen.removeEventListener('click', replay_btn_clicked);
     gameScreen.removeEventListener('mousemove', btn_hovering);
     ship = new Ship();
-    for(var i = 0; i < 10; i++){
+    for(let i = 0; i < 10; i++){
         enemies.push(new Enemy(i*50+50,50,i % 2));
     }
-    for(var i = 0; i < 10; i++){
+    for(let i = 0; i < 10; i++){
         enemies.push(new Enemy(i*50+50,120,i % 2));
     }
-    for(var i = 0; i < 10; i++){
+    for(let i = 0; i < 10; i++){
         enemies.push(new Enemy(i*50+50,190,i % 2));
+    }
+    for (let i = 0; i < ship.hp; i++) {
+        lives.push(new Life(i*35+20, 15));
     }
 }
 
@@ -99,6 +108,8 @@ function quit_game() {
     ship = null;
     missiles = [];
     enemies = [];
+    lasers = [];
+    lives = [];
     gameScreen.removeEventListener('click', quit_btn_clicked);
     gameScreen.removeEventListener('mousemove', btn_hovering);
 
@@ -208,11 +219,16 @@ function draw(){
             lasers[i].update();
             if(lasers[i] && lasers[i].touching(ship)){
                 ship.hp--;
+                lives.splice(-1,1);
                 lasers.splice(i,1);
             }
             if(lasers[i] && lasers[i].isOffScreen()){
                 lasers.splice(i,1);
             }
+        }
+
+        for (let i = lives.length-1; i>=0; i--){
+            lives[i].display();
         }
 
         ship.update();
